@@ -83,7 +83,8 @@ def save_settings(data):
 def firewall_rule_exists():
     result = subprocess.run(
         ["netsh", "advfirewall", "firewall", "show", "rule", f"name={RULE_NAME}"],
-        capture_output=True, text=True
+        capture_output=True, text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW
     )
     return "No rules match the specified criteria" not in result.stdout
 
@@ -92,14 +93,16 @@ def open_port():
     subprocess.run(
         ["netsh", "advfirewall", "firewall", "add", "rule",
          f"name={RULE_NAME}", "dir=in", "action=allow", "protocol=TCP", f"localport={PORT}"],
-        capture_output=True, text=True
+        capture_output=True, text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW
     )
 
 
 def close_port():
     subprocess.run(
         ["netsh", "advfirewall", "firewall", "delete", "rule", f"name={RULE_NAME}"],
-        capture_output=True, text=True
+        capture_output=True, text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW
     )
 
 
