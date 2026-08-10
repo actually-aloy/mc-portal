@@ -7,6 +7,11 @@ A tiny Windows utility that opens and closes the Minecraft port in your firewall
 ![Version](https://img.shields.io/badge/version-1.0-6a1fc9?style=flat-square)
 ![License](https://img.shields.io/badge/license-source--available-ecd9ff?style=flat-square)
 
+<p align="center">
+  <img src="screenshots/1.png" width="400" alt="MC Portal — portal open">
+  <img src="screenshots/2.png" width="400" alt="MC Portal — settings">
+</p>
+
 ## What it does
 
 Hosting a Minecraft Java server means poking a hole in the Windows Firewall for TCP port 25565, then remembering to close it again when you're done. MC Portal turns that into a single button:
@@ -29,7 +34,13 @@ Hosting a Minecraft Java server means poking a hole in the Windows Firewall for 
 - Settings are stored in a plain `settings.json` next to the app, no registry writes
 - Checks GitHub Releases on launch and shows an in-app banner if a newer version is available
 
-## Getting started
+## Download
+
+Grab the latest build from the [Releases page](https://github.com/actually-aloy/mc-portal/releases/latest) — download the `.exe` and run it, no setup needed.
+
+## Run from source
+
+For development, or if you'd rather run it straight from Python:
 
 ### Requirements
 
@@ -40,7 +51,7 @@ Hosting a Minecraft Java server means poking a hole in the Windows Firewall for 
 pip install pywebview pillow pystray
 ```
 
-### Run from source
+### Steps
 
 ```bash
 git clone https://github.com/actually-aloy/mc-portal.git
@@ -49,14 +60,6 @@ python mc_portal.py
 ```
 
 The app will prompt for admin rights on launch — this is required to add/remove firewall rules.
-
-### Build a standalone .exe
-
-```bash
-pyinstaller --onefile --noconsole --icon=icon.ico mc_portal.py
-```
-
-Keep `icon.ico` in the same folder as the built `.exe` — it's loaded at runtime for the tray icon, not just baked into the executable.
 
 ## Settings
 
