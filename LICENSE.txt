@@ -1,0 +1,119 @@
+MC PORTAL SOURCE-AVAILABLE LICENSE AGREEMENT
+Copyright (c) 2026 Aloy. All Rights Reserved.
+
+This License Agreement ("Agreement") governs the use of the MC Portal
+application, including its executable files, source code, object
+code, compiled binaries, embedded assets, documentation, and any
+updates thereto (collectively, the "Software"). By installing,
+copying, viewing, forking, or otherwise using the Software, you
+("User") agree to be bound by the terms of this Agreement. If you do
+not agree to these terms, do not access or use the Software.
+
+This is a source-available license, not an open-source license as
+defined by the Open Source Initiative. The source code is published
+for transparency and to allow community contributions, not to grant
+unrestricted reuse, redistribution, or commercial use rights.
+
+1. OWNERSHIP
+   The Software is licensed, not sold. Aloy ("Licensor") retains all
+   right, title, and interest in and to the Software, including all
+   intellectual property rights therein. This Agreement grants User
+   no ownership rights in the Software.
+
+2. GRANT OF LICENSE
+   Subject to compliance with this Agreement, Licensor grants User a
+   limited, non-exclusive, non-transferable, revocable license to:
+
+   a. install and use compiled releases of the Software for personal
+      or internal business purposes, on devices owned or controlled
+      by User;
+
+   b. view, read, and study the published source code;
+
+   c. fork or locally clone the source code solely for the purpose of
+      (i) personal, non-distributed local builds, or (ii) preparing
+      and submitting a Contribution (as defined in Section 4) back to
+      the official repository.
+
+   No other rights are granted, whether by implication, estoppel, or
+   otherwise.
+
+3. RESTRICTIONS
+   Except as expressly permitted under Section 2, User shall NOT, and
+   shall not permit or assist any third party to:
+
+   a. publish, host, mirror, or otherwise redistribute the Software
+      or any modified or unmodified copy of it, in source or compiled
+      form, outside of the official repository;
+
+   b. incorporate the Software or any part of its source code into
+      another product, project, or service;
+
+   c. sell, rent, lease, sublicense, or otherwise commercially exploit
+      the Software or any derivative of it;
+
+   d. remove, obscure, or alter any proprietary notices, labels, or
+      marks (including copyright and trademark notices) on or in the
+      Software;
+
+   e. circumvent, disable, or otherwise interfere with any security,
+      licensing, or technical protection measures of the Software,
+      including but not limited to obfuscation, compilation, or
+      anti-tampering mechanisms, except to the limited extent
+      applicable law expressly prohibits such restriction
+      notwithstanding this limitation;
+
+   f. use the Software, or any code derived from it, to build a
+      competing product or service.
+
+4. CONTRIBUTIONS
+   If User submits any code, documentation, or other material to the
+   official repository (a "Contribution"), User grants Licensor a
+   perpetual, irrevocable, worldwide, royalty-free, sublicensable
+   license to use, reproduce, modify, distribute, and relicense the
+   Contribution as part of the Software, under any license terms
+   Licensor chooses, including future versions of this Agreement.
+   User represents that they have the right to grant this license for
+   any Contribution they submit.
+
+5. TERMINATION
+   This license terminates automatically, without notice, if User
+   breaches any term of this Agreement. Upon termination, User must
+   destroy all copies of the Software in their possession, excluding
+   Contributions already incorporated into the official repository
+   under Section 4.
+
+6. DISCLAIMER OF WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+   NON-INFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+   IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+   OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+8. REMEDIES
+   User acknowledges that a breach of Section 3 (Restrictions) may
+   cause irreparable harm to Licensor for which monetary damages
+   would be an inadequate remedy, and that Licensor shall be entitled
+   to seek injunctive relief in addition to any other remedies
+   available at law or in equity.
+
+9. GOVERNING LAW
+   This Agreement shall be governed by and construed in accordance
+   with the laws of Singapore, without regard to its
+   conflict of law principles.
+
+10. ENTIRE AGREEMENT
+    This Agreement constitutes the entire agreement between User and
+    Licensor regarding the Software and supersedes all prior or
+    contemporaneous agreements, whether written or oral.
+
+By using the Software, User acknowledges having read this Agreement,
+understood it, and agrees to be bound by its terms.
+
+---
+Last updated: August 10, 2026
+Contact: https://t.me/actually_aloy
