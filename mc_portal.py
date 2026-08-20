@@ -12,9 +12,11 @@ from PIL import Image
 import pystray
 
 APP_NAME = "MC Portal"
-APP_VERSION = "1.0"
+APP_VERSION = "1.1"
 PORT = 25565
 RULE_NAME = "MC Portal (Minecraft Server)"
+VOICE_PORT = 24454
+VOICE_RULE_NAME = "MC Portal (Minecraft Voice Chat)"
 UPDATE_REPO = "actually-aloy/mc-portal"
 
 GITHUB_URL = "https://github.com/actually-aloy"
@@ -25,6 +27,7 @@ DEFAULT_SETTINGS = {
     "open_on_launch": False,
     "close_on_exit": True,
     "minimize_to_tray": True,
+    "voice_chat_port": True,
 }
 
 if getattr(sys, "frozen", False):
@@ -80,30 +83,54 @@ def save_settings(data):
         json.dump(data, f, indent=2)
 
 
-def firewall_rule_exists():
+def rule_exists(rule_name):
     result = subprocess.run(
-        ["netsh", "advfirewall", "firewall", "show", "rule", f"name={RULE_NAME}"],
+        ["netsh", "advfirewall", "firewall", "show", "rule", f"name={rule_name}"],
         capture_output=True, text=True,
         creationflags=subprocess.CREATE_NO_WINDOW
     )
     return "No rules match the specified criteria" not in result.stdout
 
 
-def open_port():
+def add_rule(rule_name, port, protocol):
     subprocess.run(
         ["netsh", "advfirewall", "firewall", "add", "rule",
-         f"name={RULE_NAME}", "dir=in", "action=allow", "protocol=TCP", f"localport={PORT}"],
+         f"name={rule_name}", "dir=in", "action=allow", f"protocol={protocol}", f"localport={port}"],
         capture_output=True, text=True,
         creationflags=subprocess.CREATE_NO_WINDOW
     )
+
+
+def delete_rule(rule_name):
+    subprocess.run(
+        ["netsh", "advfirewall", "firewall", "delete", "rule", f"name={rule_name}"],
+        capture_output=True, text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW
+    )
+
+
+def firewall_rule_exists():
+    return rule_exists(RULE_NAME)
+
+
+def open_port():
+    add_rule(RULE_NAME, PORT, "TCP")
 
 
 def close_port():
-    subprocess.run(
-        ["netsh", "advfirewall", "firewall", "delete", "rule", f"name={RULE_NAME}"],
-        capture_output=True, text=True,
-        creationflags=subprocess.CREATE_NO_WINDOW
-    )
+    delete_rule(RULE_NAME)
+
+
+def voice_rule_exists():
+    return rule_exists(VOICE_RULE_NAME)
+
+
+def open_voice_port():
+    add_rule(VOICE_RULE_NAME, VOICE_PORT, "UDP")
+
+
+def close_voice_port():
+    delete_rule(VOICE_RULE_NAME)
 
 
 def is_newer_version(remote, local):
@@ -149,15 +176,19 @@ class Api:
         self.settings = load_settings()
 
     def get_state(self):
-        return {"open": firewall_rule_exists(), "port": PORT}
+        return {"open": firewall_rule_exists(), "port": PORT, "voice_port": VOICE_PORT}
 
     def toggle(self):
         if firewall_rule_exists():
             close_port()
+            if self.settings.get("voice_chat_port"):
+                close_voice_port()
         else:
             open_port()
+            if self.settings.get("voice_chat_port"):
+                open_voice_port()
         refresh_tray_menu()
-        return {"open": firewall_rule_exists(), "port": PORT}
+        return {"open": firewall_rule_exists(), "port": PORT, "voice_port": VOICE_PORT}
 
     def get_settings(self):
         return self.settings
@@ -177,6 +208,8 @@ class Api:
         else:
             if self.settings.get("close_on_exit"):
                 close_port()
+                if self.settings.get("voice_chat_port"):
+                    close_voice_port()
             if tray_icon:
                 tray_icon.stop()
             try:
@@ -356,7 +389,7 @@ HTML = """
     padding: 0 16px;
   }
   #settings-card.open #settings-body {
-    max-height: 200px; opacity: 1; padding: 0 16px 10px;
+    max-height: 260px; opacity: 1; padding: 0 16px 10px;
   }
   .setting-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -412,7 +445,7 @@ HTML = """
   </div>
   <div id="status-row">
     <div id="status">Portal <b id="state-word">Closed</b></div>
-    <div id="port-label">TCP PORT 25565</div>
+    <div id="port-label">TCP __PORT__<span id="voice-port-label"></span></div>
   </div>
   <div id="controls">
     <button id="toggle-btn">Open Portal</button>
@@ -445,6 +478,13 @@ HTML = """
             <span class="slider"></span>
           </label>
         </div>
+        <div class="setting-row">
+          <span>Open voice chat port (24454)</span>
+          <label class="switch">
+            <input type="checkbox" id="voice-chat-port">
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
     </div>
   </div>
@@ -468,6 +508,7 @@ const stateWord = document.getElementById('state-word');
 const openOnLaunch = document.getElementById('open-on-launch');
 const closeOnExit = document.getElementById('close-on-exit');
 const minimizeToTray = document.getElementById('minimize-to-tray');
+const voiceChatPort = document.getElementById('voice-chat-port');
 const settingsCard = document.getElementById('settings-card');
 const settingsHeader = document.getElementById('settings-header');
 const minBtn = document.getElementById('min-btn');
@@ -510,6 +551,11 @@ function applyState(state) {
   }
 }
 
+function updateVoicePortLabel() {
+  const label = document.getElementById('voice-port-label');
+  label.textContent = voiceChatPort.checked ? '  •  UDP __VOICE_PORT__' : '';
+}
+
 async function refreshState() {
   const state = await window.pywebview.api.get_state();
   applyState(state);
@@ -531,6 +577,10 @@ closeOnExit.addEventListener('change', () => {
 });
 minimizeToTray.addEventListener('change', () => {
   window.pywebview.api.set_setting('minimize_to_tray', minimizeToTray.checked);
+});
+voiceChatPort.addEventListener('change', () => {
+  window.pywebview.api.set_setting('voice_chat_port', voiceChatPort.checked);
+  updateVoicePortLabel();
 });
 
 settingsHeader.addEventListener('click', () => {
@@ -560,6 +610,8 @@ window.addEventListener('pywebviewready', async () => {
   openOnLaunch.checked = settings.open_on_launch;
   closeOnExit.checked = settings.close_on_exit;
   minimizeToTray.checked = settings.minimize_to_tray;
+  voiceChatPort.checked = settings.voice_chat_port;
+  updateVoicePortLabel();
 });
 
 window.showUpdateBanner = function(info) {
@@ -577,6 +629,8 @@ HTML = (
     .replace("__WEBSITE_URL__", WEBSITE_URL)
     .replace("__GITHUB_URL__", GITHUB_URL)
     .replace("__APP_VERSION__", "v" + APP_VERSION)
+    .replace("__PORT__", str(PORT))
+    .replace("__VOICE_PORT__", str(VOICE_PORT))
 )
 
 
@@ -586,10 +640,16 @@ def show_window(icon=None, item=None):
 
 
 def toggle_from_tray(icon=None, item=None):
+    api = tray_icon.api_ref if tray_icon else None
+    voice_enabled = api.settings.get("voice_chat_port") if api else True
     if firewall_rule_exists():
         close_port()
+        if voice_enabled:
+            close_voice_port()
     else:
         open_port()
+        if voice_enabled:
+            open_voice_port()
     refresh_tray_menu()
     try:
         window.evaluate_js("window.refreshState && window.refreshState()")
@@ -600,6 +660,8 @@ def toggle_from_tray(icon=None, item=None):
 def quit_app(icon=None, item=None, api=None):
     if api and api.settings.get("close_on_exit"):
         close_port()
+        if api.settings.get("voice_chat_port"):
+            close_voice_port()
     if tray_icon:
         tray_icon.stop()
     try:
@@ -644,6 +706,8 @@ def main():
 
     if api.settings.get("open_on_launch"):
         open_port()
+        if api.settings.get("voice_chat_port"):
+            open_voice_port()
 
     window = webview.create_window(
         f"{APP_NAME} v{APP_VERSION}", html=HTML, js_api=api,
@@ -657,6 +721,8 @@ def main():
             return False
         if api.settings.get("close_on_exit"):
             close_port()
+            if api.settings.get("voice_chat_port"):
+                close_voice_port()
         if tray_icon:
             tray_icon.stop()
         return True
