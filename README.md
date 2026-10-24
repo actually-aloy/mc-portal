@@ -37,7 +37,7 @@ Hosting a Minecraft Java server means poking a hole in the Windows Firewall for 
 
 ## Download
 
-Grab the latest build from the [Releases page](https://github.com/actually-aloy/mc-portal/releases/latest) — download the `.exe` and run it, no setup needed.
+Grab the latest build from the [Releases page](https://github.com/actually-aloy/mc-portal/releases/latest) — download the `.zip`, extract it anywhere and run the `.exe` inside. No installer, no setup needed.
 
 Want a look first? Try the demo and read the FAQ on the [MC Portal page](https://actually-aloy.github.io/site/mcportal).
 
