@@ -2,6 +2,8 @@
 
 A tiny Windows utility that opens and closes the Minecraft port in your firewall with one click — visualized as a Nether portal that lights up when the port is open.
 
+**[Open the MC Portal page](https://actually-aloy.github.io/site/mcportal)** — a small live demo you can click, FAQ and the download button.
+
 ![Platform](https://img.shields.io/badge/platform-Windows-0a0414?style=flat-square)
 ![Version](https://img.shields.io/badge/version-1.2-6a1fc9?style=flat-square)
 ![License](https://img.shields.io/badge/license-proprietary-ecd9ff?style=flat-square)
@@ -36,6 +38,8 @@ Hosting a Minecraft Java server means poking a hole in the Windows Firewall for 
 ## Download
 
 Grab the latest build from the [Releases page](https://github.com/actually-aloy/mc-portal/releases/latest) — download the `.exe` and run it, no setup needed.
+
+Want a look first? Try the demo and read the FAQ on the [MC Portal page](https://actually-aloy.github.io/site/mcportal).
 
 Requires Windows 10/11. The app will prompt for admin rights on launch — this is required to add and remove firewall rules.
 
